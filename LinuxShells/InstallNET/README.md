@@ -1,8 +1,7 @@
-# 
+
 # 一键DD系统，以及Error, Not found interfaces config.解决办法
 
 萌咖一键网络重装为 debian9+/ubuntu16.04+
-
 密码：MoeClub.org
 
 先切换到root权限
@@ -17,9 +16,10 @@ apt-get update
 ```
 yum update //确保安装了所需软件:
 ```
-# Debian/Ubuntu:
+## Debian/Ubuntu:
 apt-get install -y xz-utils openssl gawk file //RedHat/CentOS:
-yum install -y xz openssl gawk file#下载及说明:
+yum install -y xz openssl gawk file
+## 下载及说明:
 wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh' && chmod a+x InstallNET.sh
 Usage: bash InstallNET.sh
 -d/--debian [dist-name]
@@ -30,11 +30,11 @@ Usage: bash InstallNET.sh
 -apt/-yum/--mirror
 -dd/--image
 -a/-m
-## dist-name: 发行版本代号
-## dist-version: 发行版本号
-## -apt/-yum/--mirror : 使用定义镜像
-## -a/-m : 询问是否能进入VNC自行操作. -a 为不提示(一般用于全自动安装), -m 为提示.
-## 安装debian9 (-firmware 额外驱动支持)
+### dist-name: 发行版本代号
+### dist-version: 发行版本号
+### -apt/-yum/--mirror : 使用定义镜像
+### -a/-m : 询问是否能进入VNC自行操作. -a 为不提示(一般用于全自动安装), -m 为提示.
+### 安装debian9 (-firmware 额外驱动支持)
 ```
 bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh') -d 9 -v 64 -a -firmware
 ```
