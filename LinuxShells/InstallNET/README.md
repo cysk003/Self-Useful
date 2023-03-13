@@ -6,9 +6,17 @@
 密码：MoeClub.org
 
 先切换到root权限
-sudo -i 运行: //Debian/Ubuntu:
-apt-get update //RedHat/CentOS:
+```
+sudo -i 
+```
+运行: //Debian/Ubuntu:
+```
+apt-get update 
+```
+//RedHat/CentOS:
+```
 yum update //确保安装了所需软件:
+```
 # Debian/Ubuntu:
 apt-get install -y xz-utils openssl gawk file //RedHat/CentOS:
 yum install -y xz openssl gawk file#下载及说明:
@@ -16,7 +24,8 @@ wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/Li
 Usage: bash InstallNET.sh
 -d/--debian [dist-name]
 -u/--ubuntu [dist-name]
--c/--centos [dist-version] -v/--ver [32/i386|64/amd64]
+-c/--centos [dist-version]
+-v/--ver [32/i386|64/amd64]
 --ip-addr/--ip-gate/--ip-mask
 -apt/-yum/--mirror
 -dd/--image
