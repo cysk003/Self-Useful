@@ -17,19 +17,26 @@ apt-get update
 yum update //确保安装了所需软件:
 ```
 ## Debian/Ubuntu:
-apt-get install -y xz-utils openssl gawk file //RedHat/CentOS:
+```
+apt-get install -y xz-utils openssl gawk file
+```
+## RedHat/CentOS:
+```
 yum install -y xz openssl gawk file
+```
 ## 下载及说明:
+```
 wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh' && chmod a+x InstallNET.sh
-Usage: bash InstallNET.sh
--d/--debian [dist-name]
--u/--ubuntu [dist-name]
--c/--centos [dist-version]
--v/--ver [32/i386|64/amd64]
---ip-addr/--ip-gate/--ip-mask
--apt/-yum/--mirror
--dd/--image
--a/-m
+```
+### Usage: bash InstallNET.sh
+### -d/--debian [dist-name]
+### -u/--ubuntu [dist-name]
+### -c/--centos [dist-version]
+### -v/--ver [32/i386|64/amd64]
+### --ip-addr/--ip-gate/--ip-mask
+### -apt/-yum/--mirror
+### -dd/--image
+### -a/-m
 ### dist-name: 发行版本代号
 ### dist-version: 发行版本号
 ### -apt/-yum/--mirror : 使用定义镜像
