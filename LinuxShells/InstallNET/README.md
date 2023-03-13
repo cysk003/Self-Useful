@@ -8,19 +8,22 @@
 ```
 sudo -i 
 ```
-运行: //Debian/Ubuntu:
+运行: 
+Debian/Ubuntu:
 ```
 apt-get update 
 ```
-//RedHat/CentOS:
+RedHat/CentOS:
 ```
-yum update //确保安装了所需软件:
+yum update
 ```
-## Debian/Ubuntu:
+确保安装了所需软件:
+
+Debian/Ubuntu:
 ```
 apt-get install -y xz-utils openssl gawk file
 ```
-## RedHat/CentOS:
+RedHat/CentOS:
 ```
 yum install -y xz openssl gawk file
 ```
