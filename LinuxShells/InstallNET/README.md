@@ -48,15 +48,22 @@ wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/Li
 
 -a/-m
 
-//dist-name: 发行版本代号
+dist-name: 发行版本代号
 
-//dist-version: 发行版本号
+dist-version: 发行版本号
 
-//-apt/-yum/--mirror : 使用定义镜像
+-apt/-yum/--mirror : 使用定义镜像
 
-//-a/-m : 询问是否能进入VNC自行操作. -a 为不提示(一般用于全自动安装), -m 为提示.
+-a/-m : 询问是否能进入VNC自行操作. -a 为不提示(一般用于全自动安装), -m 为提示.
 
-### #安装debian9 (-firmware 额外驱动支持)
+-p : 设置root密码
+
+### 快速安装ubuntu 20.04
+```
+bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh') -u 20.04 -v 64 -a -firmware -p "MoeClub.org"
+```
+
+### 安装debian9 (-firmware 额外驱动支持)
 ```
 bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh') -d 9 -v 64 -a -firmware
 ```
