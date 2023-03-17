@@ -1,0 +1,21 @@
+#EXTM3U
+#EXTINF:0,EZFM英语资讯广播 China Plus Radio
+http://sk.cri.cn/am846.m3u8
+#EXTINF:0,EZFM-Select-精选频道
+http://ezlive.cri.cn/english/ezfm3.m3u8?auth_key=1544123939-0-0-21c3ac78bac5fda5eee88fa127b4df49
+#EXTINF:0,EZFM-Memories-怀旧频道
+http://ezlive.cri.cn/english/ezfmoldies.m3u8?auth_key=1544123886-0-0-c31dce7c78647a49f293a91bad25f8ee
+#EXTINF:0,EZFM-Classical-古典频道
+http://ezlive.cri.cn/english/ezfmclassical.m3u8?auth_key=1544123992-0-0-8f6e3e451331b44e4d7774881f17ee06
+#EXTINF:0,EZFM-Learning-乐学频道
+http://ezlive.cri.cn/english/ezfmlearning.m3u8?auth_key=1544124756-0-0-a7d84dc625abc53e670cff06684c2a34
+#EXTINF:0,EZFM X 频道
+http://ezlive.cri.cn/english/ezfmx.m3u8?auth_key=1544124041-0-0-3fc93491658a1a82a09bc33a0aeb7db4
+#EXTINF:0,EZFM-Pop-流行频道
+http://ezlive.cri.cn/english/ezfm2.m3u8?auth_key=1544124020-0-0-853ecd4d50148d35b7135c3fba4fb3e7
+#EXTINF:0,EZFM-Jazz-爵士频道
+http://ezlive.cri.cn/english/ezfmjazz.m3u8?auth_key=1544124101-0-0-8a34b86844d248572e2f9c9a74407177
+#EXTINF:0,EZFM-Groove-律动频道
+http://ezlive.cri.cn/english/ezfmsoul.m3u8?auth_key=1544123961-0-0-1ab6e608d1dc8cb65b1e6081dda18ccb
+#EXTINF:0,EZFM-HIT FM-劲曲调频 
+http://sk.cri.cn/887.m3u8
