@@ -1,0 +1,36 @@
+#EXTM3U
+
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2015/0909/20150909150100154.jpg!200" group-title="",AsiaFM亚洲经典台
+https://lhttp.qingting.fm/live/5021912/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2019/0304/2019030413223021.jpg!200" group-title="",AsiaFM亚洲音乐台
+https://lhttp.qingting.fm/live/4581/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2015/0909/20150909150229198.jpg!200" group-title="",AsiaFM HD音乐台
+https://lhttp.qingting.fm/live/5022405/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2015/0909/20150909150229198.jpg!200" group-title="",AsiaFM亚洲天空台
+https://lhttp.qingting.fm/live/20071/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2015/0528/20150528101127365.jpg!200" group-title="",西安音乐广播
+https://lhttp.qingting.fm/live/1612/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2017/0413/20170413110533.jpeg!200" group-title="",陕西音乐广播
+https://lhttp.qingting.fm/live/4873/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2016/0715/20160715191444233.png!200" group-title="",怀旧好声音
+https://lhttp.qingting.fm/live/1223/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2015/0116/20150116191333105.jpg!200" group-title="",CRI HIT FM
+https://lhttp.qingting.fm/live/1007/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2015/0909/20150909150204260.jpg!200" group-title="",CRI环球资讯
+https://lhttp.qingting.fm/live/1005/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2013/channel_logo/4995.jpg!200" group-title="",CRI中文环球广播
+https://lhttp.qingting.fm/live/4995/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2017/0710/20170710110343.jpeg!200" group-title="",CNR经典音乐广播
+https://lhttp.qingting.fm/live/389/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2018/1031/20181031112049.jpeg!200" group-title="",CNR音乐之声
+https://lhttp.qingting.fm/live/388/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2018/1130/2018113011421973.jpg!200" group-title="",China Campus Radio中国校园之声
+https://lhttp.qingting.fm/live/20091/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2019/0611/20190611045816.jpeg!200" group-title="",全球华语音乐广播
+https://lhttp.qingting.fm/live/20212403/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2017/1213/20171213044209.jpeg!200" group-title="",民谣音乐台
+https://lhttp.qingting.fm/live/20207763/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2018/0607/20180607050038.jpeg!200" group-title="",全球华语音乐之声
+https://lhttp.qingting.fm/live/5022542/64k.mp3
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="https://pic.qingting.fm/2018/1130/2018113011421973.jpg!200" group-title="",China Plus Radio中国国际广播电台英语环球
+https://lhttp.qingting.fm/live/4584/64k.mp3
