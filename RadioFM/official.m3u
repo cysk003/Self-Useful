@@ -1,0 +1,15 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="" group-title="",AsiaFM 亚洲经典台
+mms://goldfm.cn/goldfm
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="" group-title="",AsiaFM 亚洲音乐台
+mms://asiafm.cn/asiafm
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="" group-title="",AsiaFM HD音乐台
+rtsp://asiafm.cn/asiahd
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="" group-title="",AsiaFM 亚洲天空台
+rtsp://funradio.cn/funradio
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="" group-title="",西安音乐台 FM93.1
+http://stream3.xiancity.cn/4/sd/live.m3u8
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="" group-title="",Chinamerica Hit Radio
+http://sc4.spacialnet.com:26814/listen.pls
+#EXTINF:-1 tvg-id="" tvg-name="" tvg-language="German" tvg-logo="" group-title="",Big B Radio #CPOP www.bigbradio.net
+http://64.71.79.181:8026/listen.pls
