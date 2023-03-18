@@ -1,0 +1,66 @@
+# 自订阅
+
+- type: clash
+  options:
+    url: https://free.jingfu.cf/clash/proxies
+
+- type: clash
+  options:
+    url: https://proxy.yugogo.xyz/clash/proxies
+
+- type: subscribe
+  options:
+    url: https://jiang.netlify.app
+
+- type: subscribe
+  options:
+    url: https://raw.githubusercontent.com/Jsnzkpg/Jsnzkpg/Jsnzkpg/Jsnzkpg
+
+- type: subscribe
+  options:
+          url: https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/v2
+
+- type: subscribe
+  options:
+          url: https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.txt
+
+- type: subscribe
+  options:
+          url: https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/tr
+
+- type: subscribe
+  options:
+          url: https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/ss
+
+- type: clash
+  options:
+          url: https://raw.githubusercontent.com/Jason6111/TopFreeProxies/master/Eternity.yaml
+- type: subscribe
+  options:
+          url: https://raw.githubusercontent.com/Jsnzkpg/Jsnzkpg/Jsnzkpg/Jsnzkpg
+- type: subscribe
+  options:
+          url: https://raw.githubusercontent.com/kxswa/k/k/base64
+- type: subscribe
+  options:
+          url: https://raw.githubusercontent.com/learnhard-cn/free_proxy_ss/main/v2ray/v2raysub
+
+- type: subscribe
+  options:
+          url: https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2
+
+- type: clash
+  options:
+          url: https://raw.githubusercontent.com/tbbatbb/Proxy/master/dist/clash.config.yaml
+
+- type: clash
+  options:
+          url: https://raw.githubusercontent.com/anaer/Sub/main/clash.yaml
+
+- type: clash
+  options:
+          url: https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml
+
+- type: clash
+  options:
+          url: https://tolink.pro/link/D1KxiCUtebuhi76J?clash=1
