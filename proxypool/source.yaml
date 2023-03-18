@@ -1,10 +1,5 @@
 # 模糊抓取订阅链接
-- type: webfuzzsub
-  options:
-    url: https://raw.githubusercontent.com/oouxx/fqsub/master/sub.list
-- type: webfuzzsub
-  options:
-    url: https://github.com/doudoubinga/ceshi/blob/master/trash/base64-sub
+
 - type: webfuzzsub
   options:
     url: https://github.com/JACKUSR2089/v2ray-subscribed   
@@ -13,120 +8,67 @@
     url: https://github.com/pojiezhiyuanjun/freev2
 
 # 订阅链接
+
 - type: subscribe
   options:
     url: https://raw.githubusercontent.com/ssrsub/ssr/master/v2ray
-- type: subscribe
-  options:
-    url: https://catcloud.cc/link/UKltbUAQBZbSs1p7?sub=3&extend=1
-- type: subscribe
-  options:
-    url: http://dy.v3pro.xyz/link/ZKVLPvHK94loF4Sk?sub=3&extend=1
-- type: subscribe
-  options:
-    url: http://dy.v3pro.xyz/link/ZKVLPvHK94loF4Sk?ssd=1
-- type: subscribe
-  options:
-    url: https://yt988.xyz/link/UFWbjiRsxlFN9ehY?sub=2
-- type: subscribe
-  options:
-    url: https://yt988.xyz/link/UFWbjiRsxlFN9ehY?sub=3
-- type: subscribe
-  options:
-    url: https://yt988.xyz/link/UFWbjiRsxlFN9ehY?sub=1
-- type: subscribe
-  options:
-    url: https://sub1.swagsub.top/link/KaaMk7xrrucfZyey?sub=1
-- type: subscribe
-  options:
-    url: https://sub1.swagsub.top/link/KaaMk7xrrucfZyey?sub=3
-- type: subscribe
-  options:
-    url: https://sub1.swagsub.top/link/KaaMk7xrrucfZyey?clash=1
-- type: subscribe
-  options:
-    url: https://subsice.top//link/XMkCTikr4kwWz5vV?sub=3&extend=1
-- type: subscribe
-  options:
-    url: https://subscribepro.cc/link/o3BBnUfkyhmJCca7?sub=3
-- type: subscribe
-  options:
-    url: https://subscribepro.cc/link/o3BBnUfkyhmJCca7?sub=1
-- type: subscribe
-  options:
-    url: https://subhaha.xyz/link/8YtxUW9xSgnU28Gl?sub=3&extend=1
-- type: subscribe
-  options:
-    url: https://raw.githubusercontent.com/satrom/V2SSR/master/SSR/Day.txt
-- type: subscribe
-  options:
-    url: https://yehuang2.netlify.app
-- type: subscribe
-  options:
-    url: https://yehuang1.netlify.app
-- type: subscribe
-  options:
-    url: https://raw.githubusercontent.com/satrom/V2SSR/master/V2RAY/Sub.txt
-- type: subscribe
-  options:
-    url: https://raw.githubusercontent.com/satrom/V2SSR/master/SSR/Day.txt
-- type: subscribe
-  options:
-    url: https://share.dmca.gripe/v5m2iqWlBi1PVhB7.txt
 
 # 网页模糊抓取
+
 - type: webfuzz
   options:
     url: https://merlinblog.xyz/wiki/freess.html
 - type: webfuzz
   options:
     url: https://telegra.ph/2020-10-3-10-02
-- type: webfuzz
-  options:
-    url: https://lisondawang.tk/jiedianfenxiang.html
+
 - type: webfuzz
   options:
     url: https://www.freefq.com/d/file/free-ssr/20200811/1f3e9d0d0064f662457062712dcf1b66.txt
+
 - type: webfuzz
   options:
     url: https://zfjvpn.gitbook.io/123/
-- type: webfuzz
-  options:
-    url: https://raw.githubusercontent.com/ruanfei/ShadowsocksRRShare/master/ss/ss.txt
-- type: webfuzz
-  options:
-    url: https://raw.githubusercontent.com/ruanfei/ShadowsocksRRShare/master/ssr/ssr.txt
+
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/freefq/free/master/README.md
+
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/52bp/52bp.github.io/master/freesite.html
+
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/freefq/free/master/README.md
+
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/52bp/52bp.github.io/master/freesite.html
+
 - type: webfuzz
   options:
     url: https://zfjvpn.gitbook.io/
+
 - type: webfuzz
   options:
     url: https://www.freefq.com/d/file/free-ssr/20200811/1f3e9d0d0064f662457062712dcf1b66.txt
+
 - type: webfuzz
   options:
     url: https://merlinblog.xyz/wiki/freess.html
+
 - type: webfuzz
   options:
     url: https://zfjvpn.gitbook.io/123/
+
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/ruanfei/ShadowsocksRRShare/master/ss/ss.txt
+
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/ruanfei/ShadowsocksRRShare/master/ssr/ssr.txt
-
 
 # tg频道抓取
 - type: tgchannel
@@ -309,22 +251,6 @@
     channel: V2List
     num: 300
 
-- type: subscribe
-  options:
-    url: https://pool-840979.asia1.kinto.io/vmess/sub
-- type: subscribe
-  options:
-    url: https://proxypool.ga/vmess/sub
-- type: subscribe
-  options:
-    url: https://proxypoolss.tk/vmess/sub
-- type: subscribe
-  options:
-    url: http://fuck.moneyfly.club:8080/vmess/sub
-- type: subscribe
-  options:
-    url: https://pool.starts.sh/vmess/sub
-
 - type: clash
   options:
     url: https://free.jingfu.cf/clash/proxies
@@ -385,7 +311,3 @@
 - type: clash
   options:
           url: https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml
-
-- type: clash
-  options:
-          url: https://tolink.pro/link/D1KxiCUtebuhi76J?clash=1
