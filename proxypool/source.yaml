@@ -1,74 +1,52 @@
-# 模糊抓取订阅链接
-
-- type: webfuzzsub
-  options:
-    url: https://github.com/JACKUSR2089/v2ray-subscribed   
-- type: webfuzzsub
-  options:
-    url: https://github.com/pojiezhiyuanjun/freev2
-
-# 订阅链接
-
-- type: subscribe
-  options:
-    url: https://raw.githubusercontent.com/ssrsub/ssr/master/v2ray
-
 # 网页模糊抓取
-
 - type: webfuzz
   options:
     url: https://merlinblog.xyz/wiki/freess.html
 - type: webfuzz
   options:
     url: https://telegra.ph/2020-10-3-10-02
-
 - type: webfuzz
   options:
     url: https://www.freefq.com/d/file/free-ssr/20200811/1f3e9d0d0064f662457062712dcf1b66.txt
-
 - type: webfuzz
   options:
     url: https://zfjvpn.gitbook.io/123/
-
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/freefq/free/master/README.md
-
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/52bp/52bp.github.io/master/freesite.html
-
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/freefq/free/master/README.md
-
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/52bp/52bp.github.io/master/freesite.html
-
 - type: webfuzz
   options:
     url: https://zfjvpn.gitbook.io/
-
 - type: webfuzz
   options:
     url: https://www.freefq.com/d/file/free-ssr/20200811/1f3e9d0d0064f662457062712dcf1b66.txt
-
 - type: webfuzz
   options:
     url: https://merlinblog.xyz/wiki/freess.html
-
 - type: webfuzz
   options:
     url: https://zfjvpn.gitbook.io/123/
-
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/ruanfei/ShadowsocksRRShare/master/ss/ss.txt
-
 - type: webfuzz
   options:
     url: https://raw.githubusercontent.com/ruanfei/ShadowsocksRRShare/master/ssr/ssr.txt
+- type: webfuzzsub
+  options:
+    url: https://github.com/JACKUSR2089/v2ray-subscribed   
+- type: webfuzzsub
+  options:
+    url: https://github.com/pojiezhiyuanjun/freev2
 
 # tg频道抓取
 - type: tgchannel
@@ -215,6 +193,18 @@
   options:
     channel: V2List
     num: 300
+- type: tgchannel
+  options:
+    channel: baipiaojiedian
+    num: 300
+- type: tgchannel
+  options:
+    channel: ssrList
+    num: 300
+- type: tgchannel
+  options:
+    channel: V2List
+    num: 300
 
 # 翻墙党论坛抓取
 - type: web-fanqiangdang
@@ -238,76 +228,70 @@
   options:
 
 # 自定抓取
-- type: tgchannel
+# github
+- type: subscribe
   options:
-    channel: baipiaojiedian
-    num: 300
-- type: tgchannel
+    url: https://raw.githubusercontent.com/Jsnzkpg/Jsnzkpg/Jsnzkpg/Jsnzkpg
+- type: subscribe
   options:
-    channel: ssrList
-    num: 300
-- type: tgchannel
+    url: https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.txt
+- type: subscribe
   options:
-    channel: V2List
-    num: 300
+    url: https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/v2
+- type: subscribe
+  options:
+    url: https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/tr
+- type: subscribe
+  options:
+    url: https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/ss
+- type: subscribe
+  options:
+    url: https://raw.githubusercontent.com/ssrsub/ssr/master/v2ray
+- type: subscribe
+  options:
+    url: https://raw.githubusercontent.com/kxswa/k/k/base64
+- type: subscribe
+  options:
+    url: https://raw.githubusercontent.com/learnhard-cn/free_proxy_ss/main/v2ray/v2raysub
+- type: subscribe
+  options:
+    url: https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2
+- type: subscribe
+  options:
+    url: https://jiang.netlify.app
+- type: subscribe
+  options:
+    url: https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub
+- type: clash
+  options:
+    url: https://raw.githubusercontent.com/tbbatbb/Proxy/master/dist/clash.config.yaml
+- type: clash
+  options:
+    url: https://raw.githubusercontent.com/anaer/Sub/main/clash.yaml
+- type: clash
+  options:
+    url: https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml
+- type: clash
+  options:
+    url: https://raw.githubusercontent.com/Jason6111/TopFreeProxies/master/Eternity.yaml
+- type: clash
+  options:
+    url: https://raw.githubusercontent.com/ronghuaxueleng/get_v2/main/pub/changfengoss.yaml
+- type: clash
+  options:
+    url: https://raw.githubusercontent.com/ronghuaxueleng/get_v2/main/pub/combine.yaml
+- type: clash
+  options:
+    url: https://raw.githubusercontent.com/ronghuaxueleng/get_v2/main/pub/jiang.yaml
+- type: clash
+  options:
+    url: https://raw.githubusercontent.com/ronghuaxueleng/get_v2/main/pub/ssr.yaml
 
+# proxypool
 - type: clash
   options:
     url: https://free.jingfu.cf/clash/proxies
-
 - type: clash
   options:
     url: https://proxy.yugogo.xyz/clash/proxies
 
-- type: subscribe
-  options:
-    url: https://jiang.netlify.app
-
-- type: subscribe
-  options:
-    url: https://raw.githubusercontent.com/Jsnzkpg/Jsnzkpg/Jsnzkpg/Jsnzkpg
-
-- type: subscribe
-  options:
-          url: https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/v2
-
-- type: subscribe
-  options:
-          url: https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list.txt
-
-- type: subscribe
-  options:
-          url: https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/tr
-
-- type: subscribe
-  options:
-          url: https://raw.githubusercontent.com/Leon406/SubCrawler/main/sub/share/ss
-
-- type: clash
-  options:
-          url: https://raw.githubusercontent.com/Jason6111/TopFreeProxies/master/Eternity.yaml
-- type: subscribe
-  options:
-          url: https://raw.githubusercontent.com/Jsnzkpg/Jsnzkpg/Jsnzkpg/Jsnzkpg
-- type: subscribe
-  options:
-          url: https://raw.githubusercontent.com/kxswa/k/k/base64
-- type: subscribe
-  options:
-          url: https://raw.githubusercontent.com/learnhard-cn/free_proxy_ss/main/v2ray/v2raysub
-
-- type: subscribe
-  options:
-          url: https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2
-
-- type: clash
-  options:
-          url: https://raw.githubusercontent.com/tbbatbb/Proxy/master/dist/clash.config.yaml
-
-- type: clash
-  options:
-          url: https://raw.githubusercontent.com/anaer/Sub/main/clash.yaml
-
-- type: clash
-  options:
-          url: https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/clash.yml
