@@ -262,6 +262,9 @@
 - type: subscribe
   options:
     url: https://raw.githubusercontent.com/Pawdroid/Free-servers/main/sub
+- type: subscribe
+  options:
+    url: https://raw.githubusercontent.com/freefq/free/master/v2
 - type: clash
   options:
     url: https://raw.githubusercontent.com/tbbatbb/Proxy/master/dist/clash.config.yaml
