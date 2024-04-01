@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# 检查ffprobe是否可用
-if ! command -v ffprobe &> /dev/null; then
-    echo "错误：ffprobe 工具未安装，请先安装 FFmpeg。"
+# 参数验证
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <baseurl>"
     exit 1
 fi
 
-# 检查jq是否可用
-if ! command -v jq &> /dev/null; then
-    echo "错误：jq 工具未安装，请先安装 jq。"
+# 检查ffprobe和jq是否可用
+if ! command -v ffprobe &> /dev/null || ! command -v jq &> /dev/null; then
+    echo "错误：ffprobe 或 jq 工具未安装，请先安装 FFmpeg 和 jq。"
     exit 1
 fi
 
