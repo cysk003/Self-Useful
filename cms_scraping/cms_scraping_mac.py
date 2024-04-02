@@ -5,7 +5,7 @@ import logging
 logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
 def get_data_from_api(host):
-    base_url = f'http://{host}/api.php/provide/vod/?ac=list&ac=videolist&t=&pg={{}}&h=&ids=&wd='
+    base_url = f'{host}/api.php/provide/vod/?ac=list&ac=videolist&t=&pg={{}}&h=&ids=&wd='
 
     try:
         response = requests.get(base_url.format(1))
@@ -56,5 +56,5 @@ def get_data_from_api(host):
     print("结果已保存在result.txt文件中")
 
 if __name__ == "__main__":
-    host = input("请输入主机名（默认为www.9191md.me）: ") or 'www.9191md.me'
+    host = input("请输入主机名（默认为http://www.9191md.me）: ") or 'http://www.9191md.me'
     get_data_from_api(host)
