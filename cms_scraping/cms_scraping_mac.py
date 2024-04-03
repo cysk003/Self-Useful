@@ -22,17 +22,19 @@ def fetch_data(url):
         logging.error(f"无法从 {url} 获取数据：{e}")
         return None
 
-def process_data(data):
+def process_data(data, output_file):
     if not data:
         return
 
-    for item in data.get('list', []):
-        vod_name = item.get('vod_name', 'N/A')
-        type_name = item.get('type_name', 'N/A')
-        vod_play_url = item.get('vod_play_url', 'N/A').replace('$', ',')
+    with open(output_file, 'a', encoding='utf-8') as f:
+        for item in data.get('list', []):
+            vod_name = item.get('vod_name', 'N/A')
+            type_name = item.get('type_name', 'N/A')
+            vod_play_url = item.get('vod_play_url', 'N/A').replace('$', ',')
 
-        output_str = f"[{type_name}] {vod_name} {vod_play_url}"
-        print(output_str)
+            output_str = f"[{type_name}] {vod_name} {vod_play_url}"
+            print(output_str)
+            f.write(output_str + '\n')
 
     return data.get('pagecount', 0)
 
@@ -49,13 +51,17 @@ def main():
     page_num = 1
     max_retries = 3
     retries = 0
+    output_file = 'output.txt'
+
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write('')  # 清空文件内容，准备写入新数据
 
     while retries < max_retries:
         url = f"{base_url}{page_num}"
         data = fetch_data(url)
 
         if data:
-            pagecount = process_data(data)
+            pagecount = process_data(data, output_file)
             if pagecount and page_num < pagecount:
                 page_num += 1
             else:
@@ -64,11 +70,10 @@ def main():
             retries += 1
             logging.warning(f"第 {retries} 次尝试获取数据失败")
         
-        time.sleep(5)  # 每次请求后延时5秒
+        time.sleep(5)  # 每次请求后延时5秒钟
 
     else:
         logging.error("达到最大重试次数，停止尝试获取数据")
 
 if __name__ == "__main__":
     main()
-
