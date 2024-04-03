@@ -72,6 +72,9 @@ def main():
         
         time.sleep(5)  # 每次请求后延时5秒钟
 
+        # 打印当前处理的页数
+        logging.info(f"已处理页数：{page_num}/{pagecount}")
+
     else:
         logging.error("达到最大重试次数，停止尝试获取数据")
 
