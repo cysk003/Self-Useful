@@ -1,4 +1,3 @@
-
 import requests
 import os
 import json
@@ -74,7 +73,7 @@ def main():
         # 遍历url，下载数据并保存到本地
         total_urls = len(urls)
         current_url_count = 0
-        for url in tqdm(urls, desc="进度", unit="链接"):
+        for url in urls:
             current_url_count += 1
 
             try:
@@ -82,17 +81,18 @@ def main():
                 sys.stdout.flush()  # 立即刷新输出缓冲区
 
                 print(f"正在访问链接：{url}")
-                response = requests.get(url)
-                response.raise_for_status()
-                filename = os.path.basename(urlparse(url).path)
-                print(f"文件名：{filename}")
-                if os.path.exists(filename):
-                    os.remove(filename)
-                    print(f"已删除已存在的文件：{filename}")
-                if save_to_file(response.content, filename):
-                    print(f"已保存数据到文件：{filename}")
-                else:
-                    print(f"保存数据到文件失败：{filename}")
+                response = requests.get(url, stream=True)
+
+                # 使用tqdm来显示下载进度
+                with tqdm.wrapattr(open(os.path.basename(urlparse(url).path), "wb"), "write", miniters=1,
+                                   total=int(response.headers.get('content-length', 0)),
+                                   desc=f"处理URL {current_url_count}/{total_urls}",
+                                   unit="B", unit_scale=True, unit_divisor=1024) as f:
+                    for chunk in response.iter_content(chunk_size=1024):
+                        if chunk:  # 过滤掉空的chunk
+                            f.write(chunk)
+
+                print(f"已保存数据到文件：{os.path.basename(urlparse(url).path)}")
             except requests.exceptions.RequestException as e:
                 logging.error(f"下载数据时发生错误：{e}")
 
