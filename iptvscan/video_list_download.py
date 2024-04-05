@@ -1,9 +1,11 @@
+#### pip install requests tqdm
+
 import requests
 import os
 import json
-from urllib.parse import urlparse
 import datetime
 import logging
+from urllib.parse import urlparse
 from tqdm import tqdm
 import sys
 
@@ -13,10 +15,10 @@ def setup_logging():
 def download_data(url):
     try:
         response = requests.get(url)
-        response.raise_for_status()  # 抛出异常，如果请求失败
+        response.raise_for_status()
         return response.content
     except requests.exceptions.RequestException as e:
-        logging.error(f"下载数据时发生错误：{e}")
+        logging.error(f"Error downloading data: {e}")
         return None
 
 def save_to_file(data, filename):
@@ -25,76 +27,65 @@ def save_to_file(data, filename):
             f.write(data)
         return True
     except Exception as e:
-        logging.error(f"保存数据到文件失败：{filename}, 错误：{e}")
+        logging.error(f"Failed to save data to file: {filename}, Error: {e}")
         return False
 
 def main():
     setup_logging()
-
-    # 记录运行时间
     now = datetime.datetime.now()
-    logging.info(f"运行时间: {now.strftime('%Y-%m-%d %H:%M:%S')}")
+    logging.info(f"Script started: {now.strftime('%Y-%m-%d %H:%M:%S')}")
 
-    # 提示用户输入链接
-    input_links = input("请输入一个或多个链接进行访问（以逗号分隔）：").split(',')
-    logging.info(f"输入链接: {input_links}")
+    input_links = input("Enter one or more links to fetch (separated by commas): ").split(',')
+    logging.info(f"Input links: {input_links}")
 
     total_links = len(input_links)
     current_link_count = 0
 
-    # 获取数据
     for input_link in input_links:
         current_link_count += 1
-        print(f"处理链接 {current_link_count}/{total_links}: {input_link.strip()}")
-        logging.info(f"处理链接 {current_link_count}/{total_links}: {input_link.strip()}")
+        print(f"Processing link {current_link_count}/{total_links}: {input_link.strip()}")
+        logging.info(f"Processing link {current_link_count}/{total_links}: {input_link.strip()}")
 
-        # 获取数据
-        print("正在获取数据...")
         data = download_data(input_link.strip())
         if not data:
-            print("无法获取数据。")
+            print("Failed to retrieve data.")
             continue
 
-        # 解析JSON
         try:
-            print("正在解析JSON数据...")
             json_data = json.loads(data)
         except json.JSONDecodeError as e:
-            logging.error(f"无法解析JSON数据：{e}")
+            logging.error(f"Failed to parse JSON data: {e}")
             continue
 
-        # 获取所有url
         urls = [item["url"] for item in json_data.get("lives", []) if "url" in item]
         if not urls:
-            print("JSON数据中未找到符合条件的URL。")
+            print("No URLs found in the JSON data.")
             continue
-        print(f"从JSON数据中提取到的URL列表：{urls}")
+        print(f"Extracted URLs from JSON data: {urls}")
 
-        # 遍历url，下载数据并保存到本地
         total_urls = len(urls)
         current_url_count = 0
         for url in urls:
             current_url_count += 1
 
             try:
-                print(f"处理URL {current_url_count}/{total_urls}: {url}")
-                sys.stdout.flush()  # 立即刷新输出缓冲区
+                print(f"Processing URL {current_url_count}/{total_urls}: {url}")
+                sys.stdout.flush()
 
-                print(f"正在访问链接：{url}")
                 response = requests.get(url, stream=True)
-
-                # 使用tqdm来显示下载进度
                 with tqdm.wrapattr(open(os.path.basename(urlparse(url).path), "wb"), "write", miniters=1,
                                    total=int(response.headers.get('content-length', 0)),
-                                   desc=f"处理URL {current_url_count}/{total_urls}",
+                                   desc=f"Processing URL {current_url_count}/{total_urls}",
                                    unit="B", unit_scale=True, unit_divisor=1024) as f:
                     for chunk in response.iter_content(chunk_size=1024):
-                        if chunk:  # 过滤掉空的chunk
+                        if chunk:
                             f.write(chunk)
+                            f.update(len(chunk))
+            except Exception as e:
+                logging.error(f"Error processing URL {current_url_count}/{total_urls}: {e}")
+                continue
 
-                print(f"已保存数据到文件：{os.path.basename(urlparse(url).path)}")
-            except requests.exceptions.RequestException as e:
-                logging.error(f"下载数据时发生错误：{e}")
+    print("All links processed.")
 
 if __name__ == "__main__":
     main()
