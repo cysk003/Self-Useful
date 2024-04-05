@@ -4,6 +4,7 @@ import json
 from urllib.parse import urlparse
 import datetime
 import logging
+from tqdm import tqdm
 
 def setup_logging():
     logging.basicConfig(filename='log.txt', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -43,18 +44,19 @@ def main():
     # 获取数据
     for input_link in input_links:
         current_link_count += 1
+        print(f"处理链接 {current_link_count}/{total_links}: {input_link.strip()}")
         logging.info(f"处理链接 {current_link_count}/{total_links}: {input_link.strip()}")
 
         # 获取数据
-        logging.info("正在获取数据...")
+        print("正在获取数据...")
         data = download_data(input_link.strip())
         if not data:
-            logging.info("无法获取数据。")
+            print("无法获取数据。")
             continue
 
         # 解析JSON
         try:
-            logging.info("正在解析JSON数据...")
+            print("正在解析JSON数据...")
             json_data = json.loads(data)
         except json.JSONDecodeError as e:
             logging.error(f"无法解析JSON数据：{e}")
@@ -63,30 +65,32 @@ def main():
         # 获取所有url
         urls = [item["url"] for item in json_data.get("lives", []) if "url" in item]
         if not urls:
-            logging.info("JSON数据中未找到符合条件的URL。")
+            print("JSON数据中未找到符合条件的URL。")
             continue
-        logging.info(f"从JSON数据中提取到的URL列表：{urls}")
+        print(f"从JSON数据中提取到的URL列表：{urls}")
 
         # 遍历url，下载数据并保存到本地
         total_urls = len(urls)
         current_url_count = 0
-        for url in urls:
+        for url in tqdm(urls, desc="进度", unit="链接"):
             current_url_count += 1
-            logging.info(f"处理URL {current_url_count}/{total_urls}: {url}")
 
             try:
-                logging.info(f"正在访问链接：{url}")
+                print(f"处理URL {current_url_count}/{total_urls}: {url}")
+                sys.stdout.flush()  # 立即刷新输出缓冲区
+
+                print(f"正在访问链接：{url}")
                 response = requests.get(url)
                 response.raise_for_status()
                 filename = os.path.basename(urlparse(url).path)
-                logging.info(f"文件名：{filename}")
+                print(f"文件名：{filename}")
                 if os.path.exists(filename):
                     os.remove(filename)
-                    logging.info(f"已删除已存在的文件：{filename}")
+                    print(f"已删除已存在的文件：{filename}")
                 if save_to_file(response.content, filename):
-                    logging.info(f"已保存数据到文件：{filename}")
+                    print(f"已保存数据到文件：{filename}")
                 else:
-                    logging.info(f"保存数据到文件失败：{filename}")
+                    print(f"保存数据到文件失败：{filename}")
             except requests.exceptions.RequestException as e:
                 logging.error(f"下载数据时发生错误：{e}")
 
