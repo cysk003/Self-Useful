@@ -37,9 +37,15 @@ def main():
     input_links = input("请输入一个或多个链接进行访问（以逗号分隔）：").split(',')
     logging.info(f"输入链接: {input_links}")
 
+    total_links = len(input_links)
+    current_link_count = 0
+
     # 获取数据
-    for i, input_link in enumerate(input_links):
-        logging.info(f"当前进度：{i+1}/{len(input_links)}")
+    for input_link in input_links:
+        current_link_count += 1
+        logging.info(f"处理链接 {current_link_count}/{total_links}: {input_link.strip()}")
+
+        # 获取数据
         logging.info("正在获取数据...")
         data = download_data(input_link.strip())
         if not data:
@@ -62,7 +68,12 @@ def main():
         logging.info(f"从JSON数据中提取到的URL列表：{urls}")
 
         # 遍历url，下载数据并保存到本地
+        total_urls = len(urls)
+        current_url_count = 0
         for url in urls:
+            current_url_count += 1
+            logging.info(f"处理URL {current_url_count}/{total_urls}: {url}")
+
             try:
                 logging.info(f"正在访问链接：{url}")
                 response = requests.get(url)
