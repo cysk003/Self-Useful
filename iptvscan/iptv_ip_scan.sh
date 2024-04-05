@@ -21,37 +21,39 @@ if ! command -v ffprobe &> /dev/null || ! command -v jq &> /dev/null; then
 fi
 
 # 解析基本URL中的起始和结束数字
-s=$(echo $baseurl|grep -o  '\[.*\]'|sed -e 's/\[//g' -e 's/\]//g'|awk -F"-" '{print \$1}')
-e=$(echo $baseurl|grep -o  '\[.*\]'|sed -e 's/\[//g' -e 's/\]//g'|awk -F"-" '{print \$2}')
+if [[ $baseurl =~ ([0-9]+)-([0-9]+) ]]; then
+    start=${BASH_REMATCH[1]}
+    end=${BASH_REMATCH[2]}
+else
+    echo "错误：无法解析起始和结束数字。"
+    exit 1
+fi
+
 output_file="results.txt"
 
 # 计算总数目
-total=$((e - s + 1))
+total=$((end - start + 1))
 count=0
 
 echo "开始检查视频分辨率..."
 
-for n in $(seq -w $s $e)
+for number in $(seq -w $start $end)
 do
-  h=""
-  w=""
-  url=$(echo $baseurl|sed "s/\[.*\]/$n/g")
-  res=$(ffprobe -user_agent "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" -timeout 5000  -select_streams v -show_streams -v quiet -of csv="p=0" -of json -i $url)
-  
-  if [ $(echo $res|grep -c height) -gt 0 ]; then
-    h=$(echo $res|jq .streams[].height)
-    w=$(echo $res|jq .streams[].width)
-    rate=$(echo $res|jq .streams[].avg_frame_rate|sed -e 's/"//g' -e 's/\/1//g')
-    if [ "0$h" != "0" ] && [ "0$w" != "0" ]; then
-      echo "$n[${w}x${h}] @ $rate, $url"
-      echo "$n[${w}x${h}] @ $rate, $url" >> $output_file
+    url="${baseurl//\[start-end\]/$number}"
+    res=$(ffprobe -user_agent "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" -timeout 5000  -select_streams v -show_streams -v quiet -of csv="p=0" -of json -i "$url")
+
+    if [[ $res == *'"height"'* && $res == *'"width"'* ]]; then
+        height=$(jq -r '.streams[0].height' <<< "$res")
+        width=$(jq -r '.streams[0].width' <<< "$res")
+        rate=$(jq -r '.streams[0].avg_frame_rate' <<< "$res")
+        echo "$number[${width}x${height}] @ $rate, $url"
+        echo "$number[${width}x${height}] @ $rate, $url" >> "$output_file"
     fi
-  fi
-  
-  # 更新进度
-  count=$((count + 1))
-  progress=$((count * 100 / total))
-  echo -ne "正在检查: $n, 进度: $progress%\r"
+
+    # 更新进度
+    count=$((count + 1))
+    progress=$((count * 100 / total))
+    echo -ne "正在检查: $number, 进度: $progress%\r"
 done
 
 echo "检查完成，结果已保存到 $output_file"
