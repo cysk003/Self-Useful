@@ -40,6 +40,7 @@ echo "开始检查视频分辨率..."
 for number in $(seq -w $start $end)
 do
     url="${baseurl//\[start-end\]/$number}"
+    echo "正在检查视频: $url"
     res=$(ffprobe -user_agent "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" -timeout 5000  -select_streams v -show_streams -v quiet -of csv="p=0" -of json -i "$url")
 
     if [[ $res == *'"height"'* && $res == *'"width"'* ]]; then
@@ -48,12 +49,14 @@ do
         rate=$(jq -r '.streams[0].avg_frame_rate' <<< "$res")
         echo "$number[${width}x${height}] @ $rate, $url"
         echo "$number[${width}x${height}] @ $rate, $url" >> "$output_file"
+    else
+        echo "警告：未能检测到视频分辨率或宽度。"
     fi
 
     # 更新进度
     count=$((count + 1))
     progress=$((count * 100 / total))
-    echo -ne "正在检查: $number, 进度: $progress%\r"
+    echo "进度: $progress% ($count/$total)"
 done
 
 echo "检查完成，结果已保存到 $output_file"
