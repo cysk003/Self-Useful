@@ -43,14 +43,20 @@ do
     echo "正在检查视频: $url"
     res=$(ffprobe -user_agent "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" -timeout 5000  -select_streams v -show_streams -v quiet -of csv="p=0" -of json -i "$url")
 
-    if [[ $res == *'"height"'* && $res == *'"width"'* ]]; then
-        height=$(jq -r '.streams[0].height' <<< "$res")
-        width=$(jq -r '.streams[0].width' <<< "$res")
-        rate=$(jq -r '.streams[0].avg_frame_rate' <<< "$res")
-        echo "$number[${width}x${height}] @ $rate, $url"
-        echo "$number[${width}x${height}] @ $rate, $url" >> "$output_file"
+    # 检查是否成功获取了视频信息
+    if [[ -z "$res" ]]; then
+        echo "警告：未能获取视频信息。"
     else
-        echo "警告：未能检测到视频分辨率或宽度。"
+        # 检查是否检测到分辨率和宽度
+        if [[ $res == *'"height"'* && $res == *'"width"'* ]]; then
+            height=$(jq -r '.streams[0].height' <<< "$res")
+            width=$(jq -r '.streams[0].width' <<< "$res")
+            rate=$(jq -r '.streams[0].avg_frame_rate' <<< "$res")
+            echo "$number[${width}x${height}] @ $rate, $url"
+            echo "$number[${width}x${height}] @ $rate, $url" >> "$output_file"
+        else
+            echo "警告：未能检测到视频分辨率或宽度。"
+        fi
     fi
 
     # 更新进度
