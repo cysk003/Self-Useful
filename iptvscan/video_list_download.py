@@ -35,6 +35,9 @@ def main():
 
     # 获取所有url
     urls = [value for key, value in json_data.items() if key == 'url']
+    if not urls:
+        print("JSON数据中未找到符合条件的URL。")
+        return
     print(f"从JSON数据中提取到的URL列表：{urls}")
     
     # 遍历url，下载数据并保存到本地
