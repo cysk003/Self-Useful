@@ -1,3 +1,4 @@
+
 import requests
 import os
 import json
@@ -5,6 +6,7 @@ from urllib.parse import urlparse
 import datetime
 import logging
 from tqdm import tqdm
+import sys
 
 def setup_logging():
     logging.basicConfig(filename='log.txt', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
