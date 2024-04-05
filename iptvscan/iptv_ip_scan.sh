@@ -1,8 +1,16 @@
 #!/bin/bash
 
+# 提示用户输入基本URL，并提供示例
+echo "请输入基本URL，示例："
+echo "http://example.com/video_[start-end].mp4"
+echo "其中，[start-end] 是要替换的起始和结束数字部分。"
+
+# 读取用户输入的基本URL
+read -p "请输入基本URL: " baseurl
+
 # 参数验证
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <baseurl>"
+if [ -z "$baseurl" ]; then
+    echo "错误：未提供基本URL。"
     exit 1
 fi
 
@@ -12,15 +20,16 @@ if ! command -v ffprobe &> /dev/null || ! command -v jq &> /dev/null; then
     exit 1
 fi
 
-
-baseurl=$1
-s=$(echo $baseurl|grep -o  '\[.*\]'|sed -e 's/\[//g' -e 's/\]//g'|awk -F"-" '{print $1}')
-e=$(echo $baseurl|grep -o  '\[.*\]'|sed -e 's/\[//g' -e 's/\]//g'|awk -F"-" '{print $2}')
+# 解析基本URL中的起始和结束数字
+s=$(echo $baseurl|grep -o  '\[.*\]'|sed -e 's/\[//g' -e 's/\]//g'|awk -F"-" '{print \$1}')
+e=$(echo $baseurl|grep -o  '\[.*\]'|sed -e 's/\[//g' -e 's/\]//g'|awk -F"-" '{print \$2}')
 output_file="results.txt"
 
 # 计算总数目
 total=$((e - s + 1))
 count=0
+
+echo "开始检查视频分辨率..."
 
 for n in $(seq -w $s $e)
 do
@@ -34,15 +43,15 @@ do
     w=$(echo $res|jq .streams[].width)
     rate=$(echo $res|jq .streams[].avg_frame_rate|sed -e 's/"//g' -e 's/\/1//g')
     if [ "0$h" != "0" ] && [ "0$w" != "0" ]; then
-      echo "$n[${w}X${h}],$url"
-      echo "$n[${w}X${h}],$url" >> $output_file
+      echo "$n[${w}x${h}] @ $rate, $url"
+      echo "$n[${w}x${h}] @ $rate, $url" >> $output_file
     fi
   fi
   
   # 更新进度
   count=$((count + 1))
   progress=$((count * 100 / total))
-  echo -ne "$n, Progress: $progress%\r"
+  echo -ne "正在检查: $n, 进度: $progress%\r"
 done
 
-echo "结果已保存到 $output_file"
+echo "检查完成，结果已保存到 $output_file"
