@@ -50,12 +50,17 @@ def test_video_url(url):
     return video_info
 
 def process_webpage_content(webpage_content, video_url, video_info, test_success):
-    if test_success:
-        resolution = f"[{video_info['width']}x{video_info['height']}]"
-        modified_content = re.sub(rf',?{re.escape(video_url)}', f'{resolution}, {video_url}', webpage_content)
-    else:
-        # 在视频信息测试失败时，将 '###' 添加到行的最前边
-        modified_content = re.sub(re.escape(video_url), f'{"###"}{video_url}', webpage_content)
+    lines = webpage_content.split('\n')
+    for i, line in enumerate(lines):
+        if video_url in line:
+            if test_success:
+                resolution = f"[{video_info['width']}x{video_info['height']}]"
+                lines[i] = re.sub(re.escape(video_url), f'{resolution}, {video_url}', line)
+            else:
+                # 在视频信息测试失败时，将 '###' 添加到行的最前边
+                lines[i] = f'###{line}'
+            break
+    modified_content = '\n'.join(lines)
     return modified_content
 
 
