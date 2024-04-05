@@ -33,12 +33,8 @@ def main():
         print(f"无法解析JSON数据：{e}")
         return
 
-    # 输出整个JSON数据
-    print("完整JSON数据：")
-    print(json.dumps(json_data, indent=4))
-    
     # 获取所有url
-    urls = [value for key, value in json_data.items() if key == 'url']
+    urls = [item["url"] for item in json_data.get("lives", []) if "url" in item]
     if not urls:
         print("JSON数据中未找到符合条件的URL。")
         return
