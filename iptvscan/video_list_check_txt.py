@@ -54,8 +54,10 @@ def process_webpage_content(webpage_content, video_url, video_info, test_success
         resolution = f"[{video_info['width']}x{video_info['height']}]"
         modified_content = re.sub(rf',?{re.escape(video_url)}', f'{resolution}, {video_url}', webpage_content)
     else:
-        modified_content = re.sub(re.escape(video_url), f'###{video_url}', webpage_content)
+        # 在视频信息测试失败时，将 '###' 添加到行的最前边
+        modified_content = re.sub(re.escape(video_url), f'{"###"}{video_url}', webpage_content)
     return modified_content
+
 
 def main():
     webpage_url = input("请输入要请求的网页URL: ")
