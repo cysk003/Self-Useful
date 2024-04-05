@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# 检查ffprobe和jq是否可用
+if ! command -v ffprobe &> /dev/null || ! command -v jq &> /dev/null; then
+    echo "错误：ffprobe 或 jq 工具未安装，请先安装 FFmpeg 和 jq。"
+    exit 1
+fi
+
 # 提示用户输入基本URL，并提供示例
 echo "请输入基本URL，示例："
 echo "http://example.com/video_[start-end].mp4"
@@ -11,12 +17,6 @@ read -p "请输入基本URL: " baseurl
 # 参数验证
 if [ -z "$baseurl" ]; then
     echo "错误：未提供基本URL。"
-    exit 1
-fi
-
-# 检查ffprobe和jq是否可用
-if ! command -v ffprobe &> /dev/null || ! command -v jq &> /dev/null; then
-    echo "错误：ffprobe 或 jq 工具未安装，请先安装 FFmpeg 和 jq。"
     exit 1
 fi
 
