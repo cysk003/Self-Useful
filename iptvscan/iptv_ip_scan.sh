@@ -21,7 +21,7 @@ if [ -z "$baseurl" ]; then
 fi
 
 # 解析基本URL中的起始和结束数字
-if [[ $baseurl =~ ([0-9]+)-([0-9]+) ]]; then
+if [[ $baseurl =~ \[([0-9]+)-([0-9]+)\] ]]; then
     start=${BASH_REMATCH[1]}
     end=${BASH_REMATCH[2]}
 else
@@ -29,17 +29,23 @@ else
     exit 1
 fi
 
+# 确保结束值的位数与起始值相同，不足的话在前面添加0
+end_length=${#end}
+start_padded=$(printf "%0${end_length}d" "$start")
+end_padded=$(printf "%0${end_length}d" "$end")
+
 output_file="results.txt"
 
 # 计算总数目
-total=$((end - start + 1))
+total=$((end_padded - start_padded + 1))
 count=0
 
 echo "开始检查视频分辨率..."
 
-for number in $(seq -w $start $end)
+for ((number=start; number<=end; number++))
 do
-    url=$(echo "$baseurl" | sed "s/\[start-end\]/$number/")
+    number_padded=$(printf "%0${end_length}d" "$number")
+    url=$(echo "$baseurl" | sed "s/\[$start-$end\]/$number_padded/")
     echo "正在检查视频: $url"
     res=$(ffprobe -user_agent "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" -timeout 5000  -select_streams v -show_streams -v quiet -of csv="p=0" -of json -i "$url")
 
@@ -52,8 +58,8 @@ do
             height=$(jq -r '.streams[0].height' <<< "$res")
             width=$(jq -r '.streams[0].width' <<< "$res")
             rate=$(jq -r '.streams[0].avg_frame_rate' <<< "$res")
-            echo "$number[${width}x${height}] @ $rate, $url"
-            echo "$number[${width}x${height}] @ $rate, $url" >> "$output_file"
+            echo "$number_padded[${width}x${height}] @ $rate, $url"
+            echo "$number_padded[${width}x${height}] @ $rate, $url" >> "$output_file"
         else
             echo "警告：未能检测到视频分辨率或宽度。"
         fi
@@ -62,8 +68,7 @@ do
     # 更新进度
     count=$((count + 1))
     progress=$((count * 100 / total))
-    echo "进度: $progress% ($count/$total)"
+    echo "进度: $progress% 完成 ($count/$total)"
 done
 
-echo "检查完成，结果已保存到 $output_file"
-``
+echo "视频分辨率检查完成。结果保存在: $output_file"
