@@ -1,68 +1,68 @@
 #!/bin/bash
 
-# 检查ffprobe和jq是否可用
+# Check if ffprobe and jq are available
 if ! command -v ffprobe &> /dev/null || ! command -v jq &> /dev/null; then
-    echo "错误：ffprobe 或 jq 工具未安装，请先安装 FFmpeg 和 jq。"
+    echo "Error: ffprobe or jq not installed. Please install FFmpeg and jq."
     exit 1
 fi
 
-# 提示用户输入基本URL，并提供示例
-read -p "请输入基本URL，示例：http://example.com/video_[start-end].mp4: " baseurl
+# Prompt the user to input the base URL and provide an example
+read -p "Enter the base URL, e.g., http://example.com/video_[start-end].mp4: " baseurl
 
-# 参数验证
+# Validate parameters
 if [ -z "$baseurl" ]; then
-    echo "错误：未提供基本URL。"
+    echo "Error: Base URL not provided."
     exit 1
 fi
 
-# 解析基本URL中的起始和结束数字
+# Parse the start and end numbers from the base URL
 if [[ $baseurl =~ \[([0-9]+)-([0-9]+)\] ]]; then
     start=${BASH_REMATCH[1]}
     end=${BASH_REMATCH[2]}
 else
-    echo "错误：无法解析起始和结束数字。"
+    echo "Error: Unable to parse start and end numbers."
     exit 1
 fi
 
-# 确保结束值的位数与起始值相同，不足的话在前面添加0
+# Ensure the end number has the same length as the start number, padding with zeros if necessary
 end_length=${#end}
 end=$(printf "%0${end_length}d" "$end")
 
 output_file="results.txt"
 
-# 计算总数目
+# Calculate the total number of URLs
 total=$((end - start + 1))
 count=0
 
-echo "开始检查视频分辨率..."
+echo "Checking video resolutions..."
 
-# 迭代URL范围
+# Iterate over the URL range
 for ((number=start; number<=end; number++))
 do
     url=$(echo "$baseurl" | sed "s/\[$start-$end\]/$number/")
-    echo "正在检查视频: $url"
+    echo "Checking video: $url"
     
-    # 获取视频信息
+    # Get video information
     res=$(ffprobe -user_agent "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" -timeout 5000  -select_streams v -show_streams -v quiet -of csv="p=0" -of json -i "$url")
 
-    # 检查是否成功获取了视频信息
+    # Check if video information retrieval was successful
     if [[ -z "$res" ]]; then
-        echo "警告：未能获取视频信息。"
+        echo "Warning: Unable to retrieve video information."
     else
-        # 提取分辨率和帧率
+        # Extract resolution and frame rate
         if [[ $res == *'"height"'* && $res == *'"width"'* ]]; then
             resolution=$(jq -r '.streams[0] | "\(.width)x\(.height)"' <<< "$res")
             rate=$(jq -r '.streams[0].avg_frame_rate' <<< "$res")
             echo "$number[$resolution] @ $rate, $url"
             echo "$number[$resolution] @ $rate, $url" >> "$output_file"
         else
-            echo "警告：未能检测到视频分辨率或宽度。"
+            echo "Warning: Video resolution or width not detected."
         fi
     fi
 
-    # 更新进度
+    # Update progress
     ((count++))
-    echo "进度: $((count * 100 / total))% 完成 ($count/$total)"
+    echo "Progress: $((count * 100 / total))% complete ($count/$total)"
 done
 
-echo "视频分辨率检查完成。结果保存在: $output_file"
+echo "Video resolution check completed. Results saved in: $output_file"
