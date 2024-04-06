@@ -1,96 +1,71 @@
 import os
 import requests
 import subprocess
-import logging
+from urllib.parse import urlparse
 
-# Global constants
-DEFAULT_USERNAME = os.environ.get("MY_GITHUB_USERNAME", "your_username")
-DEFAULT_PAT = os.environ.get("MY_GITHUB_PAT", "your_personal_access_token")
-DEFAULT_DESTINATION_REPO_URL = "https://github.com/{username}/{name}.git"
+# GitHub个人访问令牌
+my_github_pat = os.getenv('MY_GITHUB_PAT') or 'your_github_pat_here'
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-logger = logging.getLogger(__name__)
+# 目标仓库的用户名
+my_github_username = os.getenv('MY_GITHUB_USERNAME') or 'your_github_username_here'
 
-# Function: Check if repository exists
-def repository_exists(name, pat):
+# 定义源仓库信息的列表
+source_repositories = [
+    {'url': 'https://github.com/example_user/example_repo_1.git'},  # 示例1
+    {'url': 'https://github.com/example_user/example_repo_2.git'},  # 示例2
+]
+
+def create_github_repo(repo_name):
     headers = {
-        "Authorization": f"token {pat}",
-        "Accept": "application/vnd.github.v3+json"
+        'Authorization': f'token {my_github_pat}',
+        'Accept': 'application/vnd.github.v3+json'
     }
-    response = requests.get(f"https://api.github.com/repos/{DEFAULT_USERNAME}/{name}", headers=headers)
-
-    if response.status_code == 200:
-        return True
-    elif response.status_code == 404:
-        return False
-    else:
-        logger.error(f"Failed to check if repository '{name}' exists. Status code: {response.status_code}")
-        logger.error(f"Response: {response.text}")
-        return True  # Assume it exists to avoid retry
-
-# Function: Create repository
-def create_repository(name, description, private, pat):
-    headers = {
-        "Authorization": f"token {pat}",
-        "Accept": "application/vnd.github.v3+json"
-    }
-
     data = {
-        "name": name,
-        "description": description,
-        "private": private
+        'name': repo_name,
+        'private': False,  # 是否创建私有仓库
+        # 其他参数可根据需求添加
     }
-
-    response = requests.post("https://api.github.com/user/repos", json=data, headers=headers)
-
-    if response.status_code == 201 or response.status_code == 422:  # 422 indicates repository already exists
-        logger.info(f"Repository '{name}' created successfully or already exists!")
-        return True
+    response = requests.post(f'https://api.github.com/user/repos', headers=headers, json=data)
+    if response.status_code == 201:
+        print(f"Created repository: {repo_name}")
     else:
-        logger.error(f"Failed to create repository '{name}'. Status code: {response.status_code}")
-        logger.error(f"Response: {response.text}")
-        return False
+        print(f"Failed to create repository: {repo_name}")
+        print(response.text)
 
-# Function: Clone and push repository if destination exists, otherwise do nothing
-def clone_and_push_repository(source_url, destination_url, pat):
-    repository_name = source_url.split("/")[-1].split(".")[0]
-
-    if repository_exists(repository_name, pat):
-        logger.info(f"Destination repository '{destination_url}' already exists. Proceeding...")
+def clone_or_update_repository(source_url, target_dir):
+    if os.path.exists(target_dir):
+        subprocess.run(['git', '-C', target_dir, 'fetch', '--prune'])
+        subprocess.run(['git', '-C', target_dir, 'pull', '--ff-only'])
     else:
-        logger.warning(f"Destination repository '{destination_url}' does not exist. Skipping...")
-        return
+        subprocess.run(['git', 'clone', source_url, target_dir])
 
-    if os.path.exists(repository_name):
-        logger.info(f"Repository '{repository_name}' already exists locally. Updating...")
-        os.chdir(repository_name)
-        subprocess.run(["git", "pull"])
-    else:
-        logger.info(f"Cloning repository '{repository_name}'...")
-        subprocess.run(["git", "clone", source_url])
-        os.chdir(repository_name)
+def mirror_push_to_github(source_url, target_url, target_repo_name):
+    # 克隆源仓库到本地或更新本地仓库
+    clone_or_update_repository(source_url, target_repo_name)
 
-    destination_url_with_pat = destination_url.format(username=DEFAULT_USERNAME, name=repository_name, pat=pat)
+    # 切换到目标仓库的目录
+    os.chdir(target_repo_name)
 
-    subprocess.run(["git", "remote", "set-url", "origin", destination_url_with_pat])
-    subprocess.run(["git", "push", "-f", "origin", "master"])
+    # 添加目标仓库作为远程仓库
+    subprocess.run(['git', 'remote', 'add', 'target', target_url])
 
-    logger.info(f"Repository '{repository_name}' successfully cloned or updated and force-pushed to '{destination_url}'!")
+    # 强制推送到目标仓库
+    subprocess.run(['git', 'push', '--mirror', 'target'])
 
-# Main function
-def main():
-repository_mappings = {
-    # Source repository URL: Destination repository URL
-    # "https://github.com/{source_username}/source_repo": "https://github.com/{destination_username}/destination_repo.git",
-    # Add more source and destination repository URLs here
-}
+# 处理每个源仓库
+for repo_info in source_repositories:
+    source_repo_url = repo_info['url']
+    parsed_url = urlparse(source_repo_url)
+    source_username = parsed_url.path.split('/')[1]
+    source_repo_name = parsed_url.path.split('/')[-1].split('.git')[0]
+    target_repo_name = f"{source_username}_{source_repo_name}"
+    target_repo_url = f'https://github.com/{my_github_username}/{target_repo_name}.git'
 
+    # 检查目标仓库是否存在
+    response = requests.get(target_repo_url)
+    if response.status_code == 404:
+        # 如果目标仓库不存在，则创建
+        create_github_repo(target_repo_name)
 
-    for source_url, destination_url in repository_mappings.items():
-        logger.info(f"Processing source repository: {source_url}")
-        clone_and_push_repository(source_url, destination_url, DEFAULT_PAT)
-
-if __name__ == "__main__":
-    main()
-
+    # 使用mirror方式推送到目标仓库
+    mirror_push_to_github(source_repo_url, target_repo_url, target_repo_name)
