@@ -33,8 +33,8 @@ def create_repository(name, description, private, pat):
 
     response = requests.post("https://api.github.com/user/repos", json=data, headers=headers)
 
-    if response.status_code == 201:
-        print(f"Repository '{name}' created successfully!")
+    if response.status_code == 201 or response.status_code == 422:  # 422 for repository already exists
+        print(f"Repository '{name}' created successfully or already exists!")
         return True
     else:
         print(f"Failed to create repository '{name}'. Status code: {response.status_code}")
@@ -81,14 +81,9 @@ def main():
     # Clone and push each source repository to its corresponding destination repository
     for source_url, destination_url in repository_mappings.items():
         destination_repo_name = destination_url.split("/")[-1].split(".")[0]
-        if repository_exists(destination_repo_name, pat):
-            print(f"Destination repository '{destination_repo_name}' already exists. Skipping creation.")
-        else:
-            if create_repository(destination_repo_name, f"This is a mirror repository, source repository: {source_url}", False, pat):
-                print(f"Destination repository '{destination_repo_name}' created successfully!")
-            else:
-                tasks_failed.append(destination_repo_name)
-                continue
+        if not create_repository(destination_repo_name, f"This is a mirror repository, source repository: {source_url}", False, pat):
+            tasks_failed.append(destination_repo_name)
+            continue
 
         try:
             clone_and_push_repository(source_url, destination_url, pat)
