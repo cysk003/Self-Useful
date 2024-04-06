@@ -2,6 +2,7 @@ import requests
 import subprocess
 import os
 
+# Function to check if a repository exists
 def repository_exists(name, pat):
     headers = {
         "Authorization": f"token {pat}",
@@ -19,6 +20,7 @@ def repository_exists(name, pat):
         print(f"Response: {response.text}")
         return True  # Assuming it exists to avoid retrying
 
+# Function to create a repository
 def create_repository(name, description, private, pat):
     headers = {
         "Authorization": f"token {pat}",
@@ -41,6 +43,7 @@ def create_repository(name, description, private, pat):
         print(f"Response: {response.text}")
         return False
 
+# Function to clone and push a repository
 def clone_and_push_repository(source_url, destination_url, pat):
     # Clone the repository from source URL
     subprocess.run(["git", "clone", source_url])
@@ -64,9 +67,20 @@ def clone_and_push_repository(source_url, destination_url, pat):
     print(f"Repository '{repository_name}' cloned and forcefully pushed successfully to '{destination_url}'!")
     print(f"Source repository: {source_url}")
 
+# Function to get GitHub Personal Access Token
+def get_github_pat():
+    # Try to get PAT from environment variable
+    pat = os.environ.get("MY_GITHUB_PAT")
+    if pat:
+        return pat
+    else:
+        # If PAT not found in environment variable, use hardcoded value
+        return "your_personal_access_token"
+
+# Main function
 def main():
-    # Your GitHub Personal Access Token
-    pat = "your_personal_access_token"
+    # Get GitHub Personal Access Token
+    pat = get_github_pat()
 
     # Source repository URLs and their corresponding destination repository URLs
     repository_mappings = {
