@@ -11,8 +11,8 @@ my_github_username = os.getenv('MY_GITHUB_USERNAME') or 'your_github_username_he
 
 # 定义源仓库信息的列表
 source_repositories = [
-    {'url': 'https://github.com/example_user/example_repo_1.git'},  # 示例1
-    {'url': 'https://github.com/example_user/example_repo_2.git'},  # 示例2
+    # {'url': 'https://github.com/example_user/example_repo_1.git'},  # 示例1
+    # {'url': 'https://github.com/example_user/example_repo_2.git'},  # 示例2
 ]
 
 def create_github_repo(repo_name):
@@ -46,11 +46,12 @@ def mirror_push_to_github(source_url, target_url, target_repo_name):
     # 切换到目标仓库的目录
     os.chdir(target_repo_name)
 
-    # 添加目标仓库作为远程仓库
-    subprocess.run(['git', 'remote', 'add', 'target', target_url])
+    # 添加目标仓库作为远程仓库（包含个人访问令牌）
+    target_url_with_token = f'https://{my_github_pat}@{target_url[8:]}'
+    # subprocess.run(['git', 'remote', 'add', 'target', target_url_with_token])
 
     # 强制推送到目标仓库
-    subprocess.run(['git', 'push', '--mirror', 'target'])
+    subprocess.run(['git', 'push', '--mirror', target_url_with_token])
 
 # 处理每个源仓库
 for repo_info in source_repositories:
