@@ -79,7 +79,7 @@ def main():
         if repository_exists(destination_repo_name, pat):
             print(f"Destination repository '{destination_repo_name}' already exists. Skipping creation.")
         else:
-            if create_repository(destination_repo_name, "This is a destination repository", False, pat):
+            if create_repository(destination_repo_name, "This is a mirror repository", False, pat):
                 print(f"Destination repository '{destination_repo_name}' created successfully!")
 
         clone_and_push_repository(source_url, destination_url, pat)
