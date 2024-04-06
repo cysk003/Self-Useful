@@ -1,6 +1,16 @@
 import requests
 import subprocess
 import os
+import logging
+
+# Global constants
+GITHUB_USERNAME = "your_username"
+DEFAULT_DESTINATION_REPO_URL = "https://github.com/{username}/{name}.git"
+DEFAULT_PAT = "your_personal_access_token"
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logger = logging.getLogger(__name__)
 
 # Function: Check if repository exists
 def repository_exists(name, pat):
@@ -8,16 +18,15 @@ def repository_exists(name, pat):
         "Authorization": f"token {pat}",
         "Accept": "application/vnd.github.v3+json"
     }
-
-    response = requests.get(f"https://api.github.com/repos/your_username/{name}", headers=headers)
+    response = requests.get(f"https://api.github.com/repos/{GITHUB_USERNAME}/{name}", headers=headers)
 
     if response.status_code == 200:
         return True
     elif response.status_code == 404:
         return False
     else:
-        print(f"Failed to check if repository '{name}' exists. Status code: {response.status_code}")
-        print(f"Response: {response.text}")
+        logger.error(f"Failed to check if repository '{name}' exists. Status code: {response.status_code}")
+        logger.error(f"Response: {response.text}")
         return True  # Assume it exists to avoid retry
 
 # Function: Create repository
@@ -36,76 +45,59 @@ def create_repository(name, description, private, pat):
     response = requests.post("https://api.github.com/user/repos", json=data, headers=headers)
 
     if response.status_code == 201 or response.status_code == 422:  # 422 indicates repository already exists
-        print(f"Repository '{name}' created successfully or already exists!")
+        logger.info(f"Repository '{name}' created successfully or already exists!")
         return True
     else:
-        print(f"Failed to create repository '{name}'. Status code: {response.status_code}")
-        print(f"Response: {response.text}")
+        logger.error(f"Failed to create repository '{name}'. Status code: {response.status_code}")
+        logger.error(f"Response: {response.text}")
         return False
 
 # Function: Clone and push repository if destination exists, otherwise do nothing
-def clone_and_push_or_update_repository(source_url, destination_url, pat):
-    # Get the repository name from the source URL
+def clone_and_push_repository(source_url, destination_url, pat):
     repository_name = source_url.split("/")[-1].split(".")[0]
 
-    # Check if the destination repository exists
-    if repository_exists(destination_url, pat):
-        print(f"Destination repository '{destination_url}' already exists. Proceeding...")
+    if repository_exists(repository_name, pat):
+        logger.info(f"Destination repository '{destination_url}' already exists. Proceeding...")
     else:
-        print(f"Destination repository '{destination_url}' does not exist. Skipping...")
+        logger.warning(f"Destination repository '{destination_url}' does not exist. Skipping...")
         return
 
-    # Check if the repository already exists locally
     if os.path.exists(repository_name):
-        print(f"Repository '{repository_name}' already exists locally. Updating...")
-        # Change directory to the existing repository
+        logger.info(f"Repository '{repository_name}' already exists locally. Updating...")
         os.chdir(repository_name)
-        # Pull the latest changes from the remote repository
         subprocess.run(["git", "pull"])
     else:
-        # Clone the repository at the source URL
+        logger.info(f"Cloning repository '{repository_name}'...")
         subprocess.run(["git", "clone", source_url])
-        # Change directory to the cloned repository
         os.chdir(repository_name)
 
-    # Modify the remote URL to include the personal access token
-    destination_url_with_pat = destination_url.format(pat=pat)
+    destination_url_with_pat = destination_url.format(username=GITHUB_USERNAME, name=repository_name, pat=pat)
 
-    # Set the new remote URL
     subprocess.run(["git", "remote", "set-url", "origin", destination_url_with_pat])
+    subprocess.run(["git", "push", "-f", "origin", "master"])
 
-    # Push changes to the destination repository
-    subprocess.run(["git", "push", "-f", "origin", "master"])  # Force push
-
-    print(f"This is a mirrored repository, source repository: {source_url}")
-    print(f"Repository '{repository_name}' successfully cloned or updated and force-pushed to '{destination_url}'!")
-    print(f"Source repository: {source_url}")
-
+    logger.info(f"Repository '{repository_name}' successfully cloned or updated and force-pushed to '{destination_url}'!")
 
 # Function: Get GitHub personal access token
 def get_github_pat():
-    # Attempt to get PAT from environment variable
     pat = os.environ.get("MY_GITHUB_PAT")
     if pat:
         return pat
     else:
-        # Use hardcoded value if PAT is not found in environment variables
-        return "your_personal_access_token"
+        logger.warning("GitHub personal access token not found in environment variables. Using default token.")
+        return DEFAULT_PAT
 
 # Main function
 def main():
-    # Get GitHub personal access token
     pat = get_github_pat()
 
-    # Mapping of source repository URLs to their corresponding destination repository URLs
     repository_mappings = {
         "https://github.com/your_username/source_repo": "https://github.com/your_username/destination_repo.git",
         # Add more source and destination repository URLs here
     }
 
-    # Iterate over each mapping and perform clone and push operation
     for source_url, destination_url in repository_mappings.items():
-        print(f"Processing source repository: {source_url}")
+        logger.info(f"Processing source repository: {source_url}")
         clone_and_push_repository(source_url, destination_url, pat)
 
 if __name__ == "__main__":
