@@ -1,12 +1,12 @@
+import os
 import requests
 import subprocess
-import os
 import logging
 
 # Global constants
-GITHUB_USERNAME = "your_username"
+DEFAULT_USERNAME = os.environ.get("MY_GITHUB_USERNAME", "your_username")
+DEFAULT_PAT = os.environ.get("MY_GITHUB_PAT", "your_personal_access_token")
 DEFAULT_DESTINATION_REPO_URL = "https://github.com/{username}/{name}.git"
-DEFAULT_PAT = "your_personal_access_token"
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -18,7 +18,7 @@ def repository_exists(name, pat):
         "Authorization": f"token {pat}",
         "Accept": "application/vnd.github.v3+json"
     }
-    response = requests.get(f"https://api.github.com/repos/{GITHUB_USERNAME}/{name}", headers=headers)
+    response = requests.get(f"https://api.github.com/repos/{DEFAULT_USERNAME}/{name}", headers=headers)
 
     if response.status_code == 200:
         return True
@@ -71,34 +71,26 @@ def clone_and_push_repository(source_url, destination_url, pat):
         subprocess.run(["git", "clone", source_url])
         os.chdir(repository_name)
 
-    destination_url_with_pat = destination_url.format(username=GITHUB_USERNAME, name=repository_name, pat=pat)
+    destination_url_with_pat = destination_url.format(username=DEFAULT_USERNAME, name=repository_name, pat=pat)
 
     subprocess.run(["git", "remote", "set-url", "origin", destination_url_with_pat])
     subprocess.run(["git", "push", "-f", "origin", "master"])
 
     logger.info(f"Repository '{repository_name}' successfully cloned or updated and force-pushed to '{destination_url}'!")
 
-# Function: Get GitHub personal access token
-def get_github_pat():
-    pat = os.environ.get("MY_GITHUB_PAT")
-    if pat:
-        return pat
-    else:
-        logger.warning("GitHub personal access token not found in environment variables. Using default token.")
-        return DEFAULT_PAT
-
 # Main function
 def main():
-    pat = get_github_pat()
+repository_mappings = {
+    # Source repository URL: Destination repository URL
+    # "https://github.com/{source_username}/source_repo": "https://github.com/{destination_username}/destination_repo.git",
+    # Add more source and destination repository URLs here
+}
 
-    repository_mappings = {
-        "https://github.com/your_username/source_repo": "https://github.com/your_username/destination_repo.git",
-        # Add more source and destination repository URLs here
-    }
 
     for source_url, destination_url in repository_mappings.items():
         logger.info(f"Processing source repository: {source_url}")
-        clone_and_push_repository(source_url, destination_url, pat)
+        clone_and_push_repository(source_url, destination_url, DEFAULT_PAT)
 
 if __name__ == "__main__":
     main()
+
