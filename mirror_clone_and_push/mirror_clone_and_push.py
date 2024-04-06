@@ -95,24 +95,19 @@ def main():
     # Clone and push each source repository to its corresponding destination repository
     for source_url, destination_url in repository_mappings.items():
         destination_repo_name = destination_url.split("/")[-1].split(".")[0]
-        if not create_repository(destination_repo_name, f"This is a mirror repository, source repository: {source_url}", False, pat):
-            tasks_failed.append(destination_repo_name)
+        if not create_repository(destination_repo_name, f"This is a mirror repository of {source_url}.", False, pat):
+            tasks_failed.append(source_url)
             continue
+        clone_and_push_repository(source_url, destination_url, pat)
+        tasks_completed.append(source_url)
 
-        try:
-            clone_and_push_repository(source_url, destination_url, pat)
-            tasks_completed.append(destination_repo_name)
-        except Exception as e:
-            tasks_failed.append(destination_repo_name)
-            print(f"An error occurred while processing repository '{destination_repo_name}': {str(e)}")
-
-    print("\nAll tasks completed!")
-    print("Completed tasks:")
+    print("\nTasks completed:")
     for task in tasks_completed:
-        print(f"- {task}")
-    print("\nFailed tasks:")
+        print(task)
+
+    print("\nTasks failed:")
     for task in tasks_failed:
-        print(f"- {task}")
+        print(task)
 
 if __name__ == "__main__":
     main()
