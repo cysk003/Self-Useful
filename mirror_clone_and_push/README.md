@@ -3,3 +3,5 @@
 
 English:
 This code automates GitHub repository management. It can clone specified source repositories to target repositories based on pre-defined mapping relationships and forcefully push any changes to the target repositories. The code first checks if the target repository exists; if not, it creates a new one. Then, it authenticates using a personal access token and utilizes GitHub's API to perform clone and push operations. This ensures that the content of the source repositories stays synchronized with the target repositories, simplifying the repository management process.
+
+请替换其中的 "your_username" 和 "your_personal_access_token" 为你自己的用户名和 GitHub Personal Access Token。
