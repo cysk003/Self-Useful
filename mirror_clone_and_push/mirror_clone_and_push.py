@@ -60,7 +60,9 @@ def clone_and_push_repository(source_url, destination_url, pat):
     # Push changes to the destination repository
     subprocess.run(["git", "push", "-f", "origin", "master"])  # Force push
 
+    print(f"This is a mirror repository, source repository: {source_url}")
     print(f"Repository '{repository_name}' cloned and forcefully pushed successfully to '{destination_url}'!")
+    print(f"Source repository: {source_url}")
 
 def main():
     # Your GitHub Personal Access Token
@@ -73,16 +75,35 @@ def main():
         # Add more mappings as needed
     }
 
+    tasks_completed = []
+    tasks_failed = []
+
     # Clone and push each source repository to its corresponding destination repository
     for source_url, destination_url in repository_mappings.items():
         destination_repo_name = destination_url.split("/")[-1].split(".")[0]
         if repository_exists(destination_repo_name, pat):
             print(f"Destination repository '{destination_repo_name}' already exists. Skipping creation.")
         else:
-            if create_repository(destination_repo_name, "This is a mirror repository", False, pat):
+            if create_repository(destination_repo_name, f"This is a mirror repository, source repository: {source_url}", False, pat):
                 print(f"Destination repository '{destination_repo_name}' created successfully!")
+            else:
+                tasks_failed.append(destination_repo_name)
+                continue
 
-        clone_and_push_repository(source_url, destination_url, pat)
+        try:
+            clone_and_push_repository(source_url, destination_url, pat)
+            tasks_completed.append(destination_repo_name)
+        except Exception as e:
+            tasks_failed.append(destination_repo_name)
+            print(f"An error occurred while processing repository '{destination_repo_name}': {str(e)}")
+
+    print("\nAll tasks completed!")
+    print("Completed tasks:")
+    for task in tasks_completed:
+        print(f"- {task}")
+    print("\nFailed tasks:")
+    for task in tasks_failed:
+        print(f"- {task}")
 
 if __name__ == "__main__":
     main()
