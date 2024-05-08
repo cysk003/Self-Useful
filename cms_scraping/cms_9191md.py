@@ -4,10 +4,10 @@ import time
 
 api_url = 'http://www.9191md.me/api.php/provide/vod/'
 api_params = {
-    'ac': 'list',
     'ac': 'videolist',
+    'pg': '1',
     't': '',
-    'pg': 1
+    'h': ''
 }
 
 session = requests.Session()
