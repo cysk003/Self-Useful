@@ -24,14 +24,13 @@ def process_urls(baseurl):
         return
 
     prefix, start, end, suffix = match.groups()
-    start = start.zfill(len(end))
     total_urls = int(end) - int(start) + 1
     success_count = 0
     failure_count = 0
 
     with open("results.txt", 'w') as f:
         for n in tqdm(range(int(start), int(end) + 1), desc="Processing URLs", total=total_urls):
-            url = f"{prefix}{str(n).zfill(len(end))}{suffix}"
+            url = f"{prefix}{n}{suffix}"
             width, height, success = get_resolution(url)
             if success:
                 success_count += 1
