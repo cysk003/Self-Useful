@@ -1,6 +1,7 @@
 import subprocess
 import json
 import re
+from itertools import product
 from tqdm import tqdm
 
 def get_resolution(url):
@@ -18,24 +19,31 @@ def get_resolution(url):
         return None, None, False
 
 def process_urls(baseurl):
-    match = re.match(r'(.+)\[(\d+)-(\d+)\](.+)', baseurl)
-    if not match:
+    matches = re.findall(r'\[(\d+-\d+)\]', baseurl)
+    if not matches:
         print("Invalid baseurl format. It should contain [start-end]")
         return
 
-    prefix, start, end, suffix = match.groups()
-    total_urls = int(end) - int(start) + 1
+    patterns = []
+    for match in matches:
+        start, end = map(int, match.split('-'))
+        patterns.append(list(range(start, end + 1)))
+
+    total_urls = len(list(product(*patterns))) if patterns else 0
+
     success_count = 0
     failure_count = 0
 
     with open("results.txt", 'w') as f:
-        for n in tqdm(range(int(start), int(end) + 1), desc="Processing URLs", total=total_urls):
-            url = f"{prefix}{n}{suffix}"
+        for nums in tqdm(product(*patterns), desc="Processing URLs", total=total_urls):
+            url = baseurl
+            for num, match in zip(nums, matches):
+                url = url.replace(f"[{match}]", str(num))
             width, height, success = get_resolution(url)
             if success:
                 success_count += 1
-                video_info = f"{n} [{width}x{height}], {url}"
-                print(f"Processed URL {n}/{total_urls} - {video_info}")
+                video_info = f"{url} [{width}x{height}]"
+                print(f"Processed URL - {video_info}")
                 f.write(video_info + "\n")
             else:
                 failure_count += 1
