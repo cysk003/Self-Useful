@@ -42,7 +42,7 @@ def process_urls(baseurl):
             width, height, success = get_resolution(url)
             if success:
                 success_count += 1
-                video_info = f"[{width}x{height}],{url}"
+                video_info = f"{num}[{width}x{height}], {url}"
                 print(f"Processed URL - {video_info}")
                 f.write(video_info + "\n")
             else:
