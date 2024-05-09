@@ -51,6 +51,6 @@ def process_urls(baseurl):
     print(f"Results saved to results.txt | Success: {success_count} | Failure: {failure_count}")
 
 if __name__ == "__main__":
-    print("Please enter the baseurl following the example format: http://example.com/videos/video[1-10].mp4")
+    print("Please enter the baseurl following the example format: http://example.com/videos/video[001-100].mp4")
     baseurl = input("Enter baseurl: ")
     process_urls(baseurl)
